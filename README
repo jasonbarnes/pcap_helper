@@ -1,0 +1,30 @@
+pcap_helper.h
+Jason Barnes
+
+The functions found in pcap_helper.h are designed to aid in reading offline
+pcap files.  Currently, only one function exists: pcap_helper_open_offine.
+It works by opening a pcap file and applying a function to every packet
+in the file.
+
+Explanation of arguments:
+
+char *filename:	The filename of the pcap file to be read.
+
+void (*func)(const struct pcap_pkthdr *, const u_char *, struct iphdr *, 
+struct tcphdr *, void *):  A function pointer to your function to be applied to each packet.
+
+void *func_data: A pointer to data that will be passed into func as the last argument.
+
+Explanation of the function pointer func's arguments:
+const struct pcap_pkthdr *:  A pointer to the pcap packet header for each packet.  
+This is a struct that contains information specific to pcap, such as the 
+timestamp of when the packet was captured, and how many bytes were captured.
+
+const u_char *:  A pointer to the packet data, starting with the first byte of
+the Ethernet header.
+
+struct iphdr *:  If the packet is an IP packet, this will be a pointer to the start of the
+IP header.  Otherwise, it will be NULL.
+
+struct tcphdr *:  If the packet is a TCP packet, this will be a pointer to the start of the
+TCP header.  Otherwise, it will be NULL.
